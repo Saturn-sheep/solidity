@@ -1,0 +1,70 @@
+{
+	"compiler": {
+		"version": "0.7.6+commit.7338295f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "deposit",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/process.sol": "IExternalContractDeposit"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/process.sol": {
+			"keccak256": "0x22624450c522404aab797d960334597007dc446449864b9c30cf6f568e85d9d4",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://acbb3d63c88e8b618f98bbf6b199d965a32cab3fcbad69c996472dbe16f707b5",
+				"dweb:/ipfs/Qmd9PxHzZs1YdgzrX5wr5tkwbBbf1EpBSAN5jT1H5RPdcs"
+			]
+		}
+	},
+	"version": 1
+}

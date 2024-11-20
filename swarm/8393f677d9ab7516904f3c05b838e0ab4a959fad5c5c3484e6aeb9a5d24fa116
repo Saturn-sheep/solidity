@@ -1,0 +1,66 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity =0.7.6;
+pragma abicoder v2; // Ensure ABI coder v2 is enabled for structs
+
+// Define the MintParams structure based on your description
+struct MintParams {
+    address token0;
+    address token1;
+    int24 tickSpacing;
+    int24 tickLower;
+    int24 tickUpper;
+    uint256 amount0Desired;
+    uint256 amount1Desired;
+    uint256 amount0Min;
+    uint256 amount1Min;
+    address recipient;
+    uint256 deadline;
+    uint160 sqrtPriceX96;
+}
+
+// Interface for the mint function that takes MintParams and payableAmount
+interface IExternalContractMint {
+    function mint(
+        uint256 payableAmount, // Ether to be sent along with the transaction
+        MintParams calldata params // Struct with multiple parameters
+    ) external payable returns (uint256); // Add 'payable' modifier
+}
+
+// Interface for the deposit function that takes tokenId
+interface IExternalContractDeposit {
+    function deposit(uint256 tokenId, address user) external returns (bool);
+}
+
+contract CoupleSheepContract {
+    IExternalContractMint public externalContractMint; // Instance for the minting contract
+    IExternalContractDeposit public externalContractDeposit; // Instance for the deposit contract
+
+    // Set the addresses of the external contracts
+    constructor(address _externalContractMintAddress, address _externalContractDepositAddress) {
+        externalContractMint = IExternalContractMint(_externalContractMintAddress);
+        externalContractDeposit = IExternalContractDeposit(_externalContractDepositAddress);
+    }
+
+    // Call the `mint` function on the external mint contract with Ether and MintParams
+    function callMint(
+        uint256 payableAmount,
+        MintParams calldata params // Pass the struct directly as a parameter
+    ) public payable returns (uint256) {
+        // Ensure that the payable amount matches the value sent
+        require(msg.value == payableAmount, "Incorrect Ether sent");
+        
+        // Ensure the recipient in MintParams is set to the caller's wallet address
+        MintParams memory modifiedParams = params;
+        modifiedParams.recipient = msg.sender;
+
+        // Call the external contract's mint function with the provided parameters
+        return externalContractMint.mint{value: payableAmount}(payableAmount, modifiedParams);
+    }
+
+    // Call the `deposit` function on the external deposit contract with tokenId
+    function callDeposit(uint256 tokenId) public returns (bool) {
+        // Pass the caller's address explicitly to the external contract
+        return externalContractDeposit.deposit(tokenId, msg.sender);
+    }
+}
